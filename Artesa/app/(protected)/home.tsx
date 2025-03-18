@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../../contexts/AuthContext';
 import { Colors } from '../../constants/Colors';
@@ -7,7 +7,6 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { translations } from '../../constants/translations';
 import { useTheme } from '../../contexts/ThemeContext';
 import CustomButton from '../../components/CustomButton';
-import { FontAwesome } from '@expo/vector-icons'; 
 
 const HomeScreen: React.FC = () => {
   const { logout, user } = useAuth();
@@ -27,36 +26,27 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {
+      {}
+      <Image
+        source={require('../../assets/images/Artesania.jpg')} // Cambia esta ruta a tu imagen
+        style={styles.iconImage}
+      />
 
-      }
-      <FontAwesome name="paint-brush" size={60} color={Colors.primary} style={styles.iconPaint} />
-
-      {
-
-      }
       <Text style={[styles.title, titleStyle]}>
         Hola, {user?.email || 'Usuario'}
       </Text>
 
-      {
-
-      }
       <Text style={styles.subtitle}>
         Arteza es una aplicación que conecta a creadores de productos caseros con compradores interesados en artesanías y otros productos únicos.
       </Text>
-      {
 
-      }
       <CustomButton
-       title={t.categoriesTitle} 
-       onPress={() => router.push('/(protected)/categories')}
-       style={[styles.button, buttonStyle]}
-       textStyle={[styles.buttonText, buttonTextStyle]}
+        title={t.categoriesTitle}
+        onPress={() => router.push('/(protected)/categories')}
+        style={[styles.button, buttonStyle]}
+        textStyle={[styles.buttonText, buttonTextStyle]}
       />
 
-
-      {}
       <CustomButton
         title={t.preferencesTitle}
         onPress={() => router.push('/(protected)/preferences')}
@@ -64,7 +54,6 @@ const HomeScreen: React.FC = () => {
         textStyle={[styles.buttonText, buttonTextStyle]}
       />
 
-      {}
       <CustomButton
         title={t.logout}
         onPress={handleLogout}
@@ -82,8 +71,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  iconPaint: {
-    marginBottom: 20,
+  iconImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: "#8B4513",
   },
   title: {
     fontSize: 24,
@@ -119,13 +112,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   titleLight: {
-    color: Colors.primary, 
+    color: Colors.primary,
   },
   buttonPreferencesLight: {
-    backgroundColor: Colors.secondary, 
+    backgroundColor: Colors.secondary,
   },
   buttonTextLight: {
-    color: Colors.white, 
+    color: Colors.white,
   },
 
   // Estilos para el tema oscuro
@@ -144,4 +137,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-

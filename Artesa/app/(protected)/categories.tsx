@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -11,8 +11,8 @@ const categorias = [
     nombre: 'Comida',
     icon: 'fast-food-outline',
     items: [
-      { id: '1.1', nombre: 'Miel Artesanal', cantidad: 5, icon: 'ice-cream-outline' },
-      { id: '1.2', nombre: 'Pizza Casera', cantidad: 10, icon: 'pizza-outline' },
+      { id: '1.1', nombre: 'Miel Artesanal', cantidad: 5, icon: 'ice-cream-outline', precioUSD: 2.5 },
+      { id: '1.2', nombre: 'Pizza Casera', cantidad: 10, icon: 'pizza-outline', precioUSD: 4.0 },
     ],
   },
   {
@@ -20,47 +20,41 @@ const categorias = [
     nombre: 'Artesanales',
     icon: 'basket-outline',
     items: [
-      { id: '2.1', nombre: 'Tejidos a Mano', cantidad: 20, icon: 'shirt-outline' },
-      { id: '2.2', nombre: 'Cesta Tejida', cantidad: 15, icon: 'basket-outline' },
-    ],
-  },
-  {
-    id: '3',
-    nombre: 'Arte',
-    icon: 'brush-outline',
-    items: [
-      { id: '3.1', nombre: 'Cuadro Pintado', cantidad: 8, icon: 'image-outline' },
+      { id: '2.1', nombre: 'Tejidos a Mano', cantidad: 20, icon: 'shirt-outline', precioUSD: 15.0 },
+      { id: '2.2', nombre: 'Cesta Tejida', cantidad: 15, icon: 'basket-outline', precioUSD: 8.0 },
     ],
   },
 ];
 
+const tasaDeCambio = 24;
+
 const CategoriasScreen: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
+  const [carrito, setCarrito] = useState([]);
+
+  const agregarAlCarrito = (producto) => {
+    setCarrito([...carrito, producto]);
+  };
 
   const containerStyle = theme === 'light' ? styles.containerLight : styles.containerDark;
   const titleStyle = theme === 'light' ? styles.titleLight : styles.titleDark;
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {
-        
-      }
       <View style={styles.headerContainer}>
-        {
-
-        }
         <Ionicons name="storefront-outline" size={40} color={Colors.primary} style={styles.iconStore} />
-
-        {
-
-        }
         <Text style={[styles.title, titleStyle]}>Categorías</Text>
+        <TouchableOpacity onPress={() => router.push({ pathname: '/carrito', params: { carrito: JSON.stringify(carrito) } })}>
+          <Ionicons name="cart-outline" size={32} color={Colors.primary} />
+          {carrito.length > 0 && (
+            <View style={styles.cartBadge}>
+              <Text style={styles.cartBadgeText}>{carrito.length}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
       </View>
 
-      {
-
-      }
       <FlatList
         data={categorias}
         keyExtractor={(item) => item.id}
@@ -70,36 +64,38 @@ const CategoriasScreen: React.FC = () => {
               <Ionicons name={item.icon} size={24} color="#4A90E2" />
               <Text style={styles.itemCategory}>{item.nombre}</Text>
             </View>
-
             <FlatList
               data={item.items}
               keyExtractor={(subItem) => subItem.id}
-              renderItem={({ item: subItem }) => (
-                <TouchableOpacity 
-                  style={styles.item}
-                  onPress={() => router.push({ pathname: `../item/${subItem.id}`, params: subItem })}
-                >
-                  <View style={styles.infoRow}>
-                    <Ionicons name={subItem.icon} size={20} color="#666" />
-                    <Text style={styles.itemTitle}>{subItem.nombre}</Text>
-                  </View>
-
-                  <View style={styles.infoRow}>
-                    <Ionicons name="layers-outline" size={20} color="#666" />
+              renderItem={({ item: subItem }) => {
+                const precioLempiras = (subItem.precioUSD * tasaDeCambio).toFixed(2);
+                return (
+                  <View style={styles.item}>
+                    <View style={styles.infoRow}>
+                      <Ionicons name={subItem.icon} size={20} color="#666" />
+                      <Text style={styles.itemTitle}>{subItem.nombre}</Text>
+                    </View>
                     <Text style={styles.itemQuantity}>{subItem.cantidad} disponibles</Text>
+                    <Text style={styles.itemPrice}>${precioLempiras}</Text> 
+                    <TouchableOpacity 
+                      style={styles.addButton}
+                      onPress={() => agregarAlCarrito(subItem)}
+                    >
+                      <Text style={styles.addButtonText}>Agregar al carrito</Text>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
-              )}
+                );
+              }}
             />
           </View>
         )}
       />
 
-      {
-
-      }
-      <TouchableOpacity style={[styles.addButton, theme === 'light' ? styles.addButtonLight : styles.addButtonDark]} onPress={() => router.push('/(protected)/home')}>
-        <Text style={[styles.addButtonText, theme === 'light' ? styles.addButtonTextLight : styles.addButtonTextDark]}>Ir a Inicio</Text>
+      <TouchableOpacity 
+        style={styles.goHomeButton} 
+        onPress={() => router.push('/home')}
+      >
+        <Ionicons name="arrow-back-circle" size={40} color={Colors.primary} />
       </TouchableOpacity>
     </View>
   );
@@ -112,16 +108,18 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',  
-    alignItems: 'center',     
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
   },
   iconStore: {
-    marginRight: 10,  
+    marginRight: 10,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
+  },
+  categoryContainer: {
     marginBottom: 20,
   },
   itemHeader: {
@@ -134,87 +132,79 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 8,
   },
-  categoryContainer: {
-    marginBottom: 20,
-  },
   item: {
     backgroundColor: 'white',
     padding: 15,
     borderRadius: 12,
     marginBottom: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
     elevation: 3,
   },
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5,
+    marginBottom: 5,
   },
   itemTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
     marginLeft: 8,
   },
   itemQuantity: {
     fontSize: 14,
     color: '#444',
-    fontWeight: 'bold',
-    marginLeft: 8,
   },
-
-  
+  itemPrice: {
+    fontSize: 14,
+    color: '#444',
+    marginTop: 5,
+  },
   addButton: {
-    backgroundColor: Colors.primary, 
-    padding: 15,
-    borderRadius: 10,
-    width: '90%',
+    backgroundColor: Colors.primary,
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 10,
     alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    flexDirection: 'row',  
-    marginVertical: 20, 
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
   },
   addButtonText: {
     color: '#fff',
-    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
+  },
+  cartBadge: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  cartBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  goHomeButton: {
+    position: 'absolute',
+    bottom: 20,
+    left: '50%',
+    transform: [{ translateX: -20 }],
   },
 
+  // Estilos para el tema claro
   containerLight: {
     backgroundColor: Colors.background,
   },
   titleLight: {
     color: Colors.primary, 
   },
-  addButtonLight: {
-    backgroundColor: Colors.secondary, 
-  },
-  addButtonTextLight: {
-    color: Colors.white, 
-  },
 
+  // Estilos para el tema oscuro
   containerDark: {
     backgroundColor: Colors.black,
   },
   titleDark: {
     color: Colors.white,
   },
-  addButtonDark: {
-    backgroundColor: Colors.accent,
-  },
-  addButtonTextDark: {
-    color: Colors.white,
-  },
 });
 
 export default CategoriasScreen;
-

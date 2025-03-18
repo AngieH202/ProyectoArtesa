@@ -3,7 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 
 interface ArtesaCardProps {
   title: string;
+  name :string;
   description: string;
+  categoria: string;
+  stock: number;
+  producto:string;
+  Carrito: string;
 }
 
 const ArtesaCard: React.FC<ArtesaCardProps> = ({ title, description }) => {
