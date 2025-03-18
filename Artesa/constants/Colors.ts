@@ -1,6 +1,7 @@
 export const Colors = {
   primary: '#8B4513', // Marrón café fuerte (títulos y botones)
   secondary: '#A0522D', // Marrón café oscuro (botones en claro)
+  success: "#A0522D", //
   background: '#F5F5DC', // Beige claro (fondo claro)
   backgroundDark: '#3E2723', // Café muy oscuro (fondo oscuro)
   text: '#6D4C41', // Marrón suave (textos)

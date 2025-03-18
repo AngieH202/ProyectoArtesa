@@ -14,7 +14,7 @@ const CarritoScreen = () => {
 
   const total = useMemo(() => {
     return productos
-      .reduce((acc, item) => acc + item.cantidad * item.precioUSD * tasaDeCambio, 0)
+      .reduce((acc, item) => acc +  item.precioUSD * tasaDeCambio, 0)
       .toFixed(2);
   }, [productos]);
 
@@ -33,7 +33,7 @@ const CarritoScreen = () => {
             data={productos}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
-              const precioLempiras = (item.cantidad * item.precioUSD * tasaDeCambio).toFixed(2); // Convertir precio a lempiras
+              const precioLempiras = ( item.precioUSD * tasaDeCambio).toFixed(2); // Convertir precio a lempiras
               return (
                 <View style={styles.item}>
                   <Ionicons name={item.icon} size={30} color={Colors.primary} style={styles.itemIcon} />

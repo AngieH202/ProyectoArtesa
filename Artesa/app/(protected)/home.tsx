@@ -33,7 +33,7 @@ const HomeScreen: React.FC = () => {
       />
 
       <Text style={[styles.title, titleStyle]}>
-        Hola, {user?.email || 'Usuario'}
+        Bienvenido a Artesa {user?.email || 'Usuario'}
       </Text>
 
       <Text style={styles.subtitle}>

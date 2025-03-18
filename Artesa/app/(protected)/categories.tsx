@@ -5,14 +5,15 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Colors } from '../../constants/Colors';
 
+
 const categorias = [
   {
     id: '1',
     nombre: 'Comida',
     icon: 'fast-food-outline',
     items: [
-      { id: '1.1', nombre: 'Miel Artesanal', cantidad: 5, icon: 'ice-cream-outline', precioUSD: 2.5 },
-      { id: '1.2', nombre: 'Pizza Casera', cantidad: 10, icon: 'pizza-outline', precioUSD: 4.0 },
+      { id: '1.1', nombre: 'Café Artesanal', cantidad: 5, icon: 'cafe-outline', precioUSD: 3.00 },
+      { id: '1.2', nombre: 'Pizza Casera', cantidad: 10, icon: 'pizza-outline', precioUSD: 2.0 },
     ],
   },
   {
@@ -20,7 +21,7 @@ const categorias = [
     nombre: 'Artesanales',
     icon: 'basket-outline',
     items: [
-      { id: '2.1', nombre: 'Tejidos a Mano', cantidad: 20, icon: 'shirt-outline', precioUSD: 15.0 },
+      { id: '2.1', nombre: 'Camiseta Tejida a Mano', cantidad: 20, icon: 'shirt-outline', precioUSD: 10.0 },
       { id: '2.2', nombre: 'Cesta Tejida', cantidad: 15, icon: 'basket-outline', precioUSD: 8.0 },
     ],
   },
@@ -91,12 +92,24 @@ const CategoriasScreen: React.FC = () => {
         )}
       />
 
-      <TouchableOpacity 
-        style={styles.goHomeButton} 
-        onPress={() => router.push('/home')}
-      >
-        <Ionicons name="arrow-back-circle" size={40} color={Colors.primary} />
-      </TouchableOpacity>
+      {/* Contenedor para los botones inferiores */}
+      <View style={styles.bottomButtonsContainer}>
+        {/* Botón de regresar a Home */}
+        <TouchableOpacity 
+          style={styles.goHomeButton} 
+          onPress={() => router.push('/home')}
+        >
+          <Ionicons name="arrow-back-circle" size={40} color={Colors.primary} />
+        </TouchableOpacity>
+
+        {/* Botón de agregar producto */}
+        <TouchableOpacity 
+          style={styles.addProductButton} 
+          onPress={() => router.push('/addProducto')}
+        >
+          <Ionicons name="add-circle-outline" size={40} color={Colors.primary} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -183,11 +196,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
   },
-  goHomeButton: {
+
+  // Contenedor para los botones de abajo
+  bottomButtonsContainer: {
     position: 'absolute',
     bottom: 20,
     left: '50%',
-    transform: [{ translateX: -20 }],
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+    transform: [{ translateX: -50 }],
+  },
+
+  goHomeButton: {
+    marginRight: 20,
+  },
+
+  addProductButton: {
+    marginLeft: 20,
   },
 
   // Estilos para el tema claro
