@@ -1,17 +1,27 @@
-import { AuthProvider } from '@/contexts/AuthContext';
+import { Stack } from 'expo-router';
+import { AuthProvider } from '../contexts/AuthContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
-import { Slot } from 'expo-router';
-import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from '@/store/store';
 
-export default function Layout() {
-  return (
-    <AuthProvider>
-      <ThemeProvider>
-        <LanguageProvider>
-          <Slot />
-        </LanguageProvider>
-      </ThemeProvider>
-    </AuthProvider>
-  );
+export default function RootLayout() {
+    return (
+        <Provider store={store} >
+
+            <ThemeProvider>
+                <AuthProvider>
+                    <LanguageProvider>
+                        <Stack
+                            screenOptions={{
+                                headerShown: false,
+                            }}
+                        />
+                    </LanguageProvider>
+                </AuthProvider>
+            </ThemeProvider>
+        </Provider>
+
+    );
 }
+

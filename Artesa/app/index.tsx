@@ -1,12 +1,26 @@
-import { Redirect } from 'expo-router';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { View, Text } from "react-native";
+
 
 export default function Index() {
-  const { user } = useAuth();
+    const router = useRouter();
+    const { user } = useAuth();
+    const [isMounted, setIsMounted] = useState(false);
 
-  if (user) {
-    return <Redirect href="/(protected)/home" />;
-  }
+    useEffect(() => {
+        setIsMounted(true);
+    }, [])
 
-  return <Redirect href="/login" />;
+    useEffect(() => {
+        if (isMounted) {
+            router.replace(user ? '/home' : '/login');
+        }
+    }, [isMounted])
+    return (
+        <View>
+            <Text>Usuario: {user ? user.email : 'No autenticado'}</Text>
+        </View>
+    );
 }
