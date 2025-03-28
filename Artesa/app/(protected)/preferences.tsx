@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { translations } from '../../constants/translations';
 import { router } from 'expo-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUsers } from '@/store/slices/usersSlice';
+import { BASE_URL } from '@/config/api';
+import { RootState } from '@/store/store';
+import axios from "axios";
+
 
 const PreferencesScreen: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -15,7 +21,23 @@ const PreferencesScreen: React.FC = () => {
   const subtitleStyle = styles.subtitleCafesito;
   const buttonStyle = theme === 'light' ? styles.buttonCafesitoLight : styles.buttonCafesitoDark;
   const buttonTextStyle = styles.buttonTextCafesito;
+  const dispatch = useDispatch();
+  const users = useSelector((state: RootState) => state.users);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+        try {
+            console.log("base url: " + BASE_URL);
+            const response = await axios.get("http://192.168.1.34:5144/api/Usuarios");
+            dispatch(setUsers(response.data))
+        }
+        catch (err: any) {
+            console.log("Error de Axios: ", err.message);
+            console.log("Error completo: ", err.toJSON?.());
+        }
+    };
+    fetchUsers();
+}, [dispatch])
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{t.preferencesTitle}</Text>

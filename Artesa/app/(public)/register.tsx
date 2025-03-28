@@ -118,13 +118,61 @@ export default function RegisterScreen() {
 
 // 🔹 Estilos
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20, backgroundColor: "#f5f5f5" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  input: { width: "100%", height: 50, borderWidth: 1, borderColor: "#ccc", borderRadius: 10, paddingHorizontal: 15, marginBottom: 5, backgroundColor: "#fff" },
-  inputError: { borderColor: "#ff4d4d" },
-  errorText: { color: "#ff4d4d", fontSize: 14, marginBottom: 5 },
-  button: { backgroundColor: "#007bff", padding: 15, borderRadius: 10, width: "100%", alignItems: "center", marginTop: 10 },
-  buttonDisabled: { backgroundColor: "#aaa" },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
-  linkText: { marginTop: 10, color: "#007bff", textDecorationLine: "underline" },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: "#FAF3E0", // Beige claro
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#A0522D", // Marrón café
+    justifyContent: "center",
+
+  },
+  input: {
+    width: "100%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#A0522D", // Marrón rojizo
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 5,
+    backgroundColor: "#FFFFFF", // Blanco
+    color: "#A0522D", // Marrón oscuro
+  },
+  inputError: {
+    borderColor: "#FF4D4D", // Rojo para errores
+  },
+  errorText: {
+    color: "#FF4D4D",
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  button: {
+    backgroundColor: "#A0522D", // Marrón oscuro
+    padding: 15,
+    borderRadius: 10,
+    width: "100%",
+    alignItems: "center",
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  linkText: {
+    marginTop: 10,
+    color: "#8B4513", // Marrón café
+    textDecorationLine: "underline",
+  },
 });
